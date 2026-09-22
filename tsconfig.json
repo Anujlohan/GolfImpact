@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@frontend/*": ["./frontend/*"],
+      "@backend/*": ["./backend/*"],
+      "@/components/*": ["./frontend/components/*"],
+      "@/actions/*": ["./backend/actions/*"],
+      "@/types/*": ["./backend/types/*"],
+      "@/types": ["./backend/types/index"],
+      "@/lib/auth/*": ["./backend/auth/*"],
+      "@/lib/services/*": ["./backend/services/*"],
+      "@/lib/draw-engine/*": ["./backend/draw-engine/*"],
+      "@/lib/stripe/*": ["./backend/stripe/*"],
+      "@/lib/supabase/*": ["./backend/supabase/*"],
+      "@/lib/validations/*": ["./backend/validations/*"],
+      "@/lib/utils/errors": ["./backend/utils/errors"],
+      "@/lib/utils/*": ["./frontend/lib/utils/*", "./backend/utils/*"],
+      "@/lib/constants": ["./backend/constants"],
+      "@/*": ["./frontend/*", "./backend/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "frontend/**/*.ts",
+    "frontend/**/*.tsx",
+    "backend/**/*.ts",
+    "backend/**/*.tsx"
+  ],
+  "exclude": ["node_modules", "frontend/.next"]
+}

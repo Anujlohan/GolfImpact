@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js & Build Output
+.next/
+*/.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Environment & Secrets (Keep only .env.example)
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+.env.staging
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+
+# Debug Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel
