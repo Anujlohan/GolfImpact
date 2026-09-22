@@ -1,7 +1,9 @@
 export const APP_CONFIG = {
   name: 'Digital Heroes',
   description: 'The Play-to-Impact lottery platform where every score helps fund world-changing charity causes.',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  url:
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
   maxScoresPerUser: 5,
   minScore: 1,
   maxScore: 45,

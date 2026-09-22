@@ -16,9 +16,11 @@ export async function createCheckoutAction(formData: FormData) {
 
     const parsed = checkoutSchema.parse(rawData);
     const headersList = await headers();
-    const host = headersList.get('host') || 'localhost:3000';
-    const proto = headersList.get('x-forwarded-proto') || 'http';
-    const origin = `${proto}://${host}`;
+    const host = headersList.get('x-forwarded-host') || headersList.get('host') || 'localhost:3000';
+    const proto = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http');
+    const origin =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `${proto}://${host}`);
 
     const result = await SubscriptionService.createCheckoutSession(
       auth.userId,
