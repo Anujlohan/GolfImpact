@@ -10,7 +10,10 @@ describe('Environment Variable Support & Security Audit', () => {
     const env = getBackendEnv();
     expect(env.NEXT_PUBLIC_APP_URL).toBeDefined();
     expect(env.NEXT_PUBLIC_SUPABASE_URL).toBeDefined();
+    expect(env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY).toBeDefined();
     expect(env.NEXT_PUBLIC_SUPABASE_ANON_KEY).toBeDefined();
+    expect(env.SUPABASE_SECRET_KEY).toBeDefined();
+    expect(env.SUPABASE_SERVICE_ROLE_KEY).toBeDefined();
     expect(typeof env.isMockSupabase).toBe('boolean');
     expect(typeof env.isMockStripe).toBe('boolean');
   });
@@ -19,12 +22,14 @@ describe('Environment Variable Support & Security Audit', () => {
     const frontendEnv = getFrontendEnv();
     expect(frontendEnv.NEXT_PUBLIC_APP_URL).toBeDefined();
     expect(frontendEnv.NEXT_PUBLIC_SUPABASE_URL).toBeDefined();
+    expect(frontendEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY).toBeDefined();
     expect(frontendEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY).toBeDefined();
     expect(frontendEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).toBeDefined();
 
     // Verify backend secrets are NOT part of frontendEnv schema
-    expect((frontendEnv as any).STRIPE_SECRET_KEY).toBeUndefined();
+    expect((frontendEnv as any).SUPABASE_SECRET_KEY).toBeUndefined();
     expect((frontendEnv as any).SUPABASE_SERVICE_ROLE_KEY).toBeUndefined();
+    expect((frontendEnv as any).STRIPE_SECRET_KEY).toBeUndefined();
     expect((frontendEnv as any).STRIPE_WEBHOOK_SECRET).toBeUndefined();
     expect((frontendEnv as any).DATABASE_URL).toBeUndefined();
   });

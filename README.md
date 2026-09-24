@@ -92,7 +92,7 @@ cp frontend/.env.example frontend/.env
 | :--- | :--- | :--- | :--- | :--- |
 | `NEXT_PUBLIC_APP_URL` | Public / Browser | Yes | `http://localhost:3000` | Application root URL for client-side routing, auth callbacks, and redirects. |
 | `NEXT_PUBLIC_SUPABASE_URL` | Public / Browser | Yes | `https://<id>.supabase.co` | Supabase project URL (Supabase Dashboard -> Settings -> API). |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Browser | Yes | `eyJhbGci...` | Supabase Anonymous Key for client-side Auth and RLS-protected queries. |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public / Browser | Yes | `sb_publishable_...` | Supabase Publishable / Anonymous Key for client-side Auth and RLS-protected queries (also supports legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY`). |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Public / Browser | Optional (Dev) | `pk_test_...` | Stripe Publishable Key for client-side Stripe checkout redirection. |
 
 #### 2. Backend (`backend/.env`)
@@ -107,8 +107,8 @@ cp backend/.env.example backend/.env
 | `PORT` | Server | No | `3000` | Server listening port. |
 | `NEXT_PUBLIC_APP_URL` | Server | Yes | `http://localhost:3000` | Base URL used by server actions to build absolute redirect & callback URLs. |
 | `NEXT_PUBLIC_SUPABASE_URL` | Server | Yes | `https://<id>.supabase.co` | Supabase endpoint for backend database queries and admin client. |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Server | Yes | `eyJhbGci...` | Public client token used for session verification and cookies. |
-| `SUPABASE_SERVICE_ROLE_KEY` | **Secret (Server Only)** | Yes (Live DB) | `eyJhbGci...` | **High Privilege**: Bypasses Supabase Row-Level Security for admin operations and webhooks. |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Server | Yes | `sb_publishable_...` | Public client token used for session verification and cookies (also supports legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY`). |
+| `SUPABASE_SECRET_KEY` | **Secret (Server Only)** | Yes (Live DB) | `sb_secret_...` | **High Privilege**: Bypasses Supabase Row-Level Security for admin operations and webhooks (also supports legacy `SUPABASE_SERVICE_ROLE_KEY`). |
 | `DATABASE_URL` | **Secret (Server Only)** | Optional | `postgresql://postgres:...` | Direct PostgreSQL connection string for database schema migrations and seed scripts. |
 | `STRIPE_SECRET_KEY` | **Secret (Server Only)** | Yes (Live Stripe) | `sk_test_...` | Stripe Secret API key for creating Checkout Sessions and managing subscriptions. |
 | `STRIPE_WEBHOOK_SECRET` | **Secret (Server Only)** | Yes (Webhooks) | `whsec_...` | Stripe Webhook Signing Secret to verify incoming payloads at `/api/stripe/webhook`. |
@@ -123,7 +123,7 @@ cp backend/.env.example backend/.env
 ```env
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 ```
 
@@ -135,8 +135,8 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key
+SUPABASE_SECRET_KEY=sb_secret_your_key
 DATABASE_URL=postgresql://postgres:your-db-password@db.your-project.supabase.co:5432/postgres
 
 # Stripe

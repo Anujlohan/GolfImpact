@@ -8,7 +8,9 @@ export interface BackendEnv {
   PORT: number;
   NEXT_PUBLIC_APP_URL: string;
   NEXT_PUBLIC_SUPABASE_URL: string;
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
   NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
+  SUPABASE_SECRET_KEY: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
   DATABASE_URL?: string;
   STRIPE_SECRET_KEY: string;
@@ -21,7 +23,16 @@ export interface BackendEnv {
 }
 
 export function getBackendEnv(): BackendEnv {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co';
+  const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co';
+  const supabaseUrl = rawUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+  const publishableKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    'mock-anon-key';
+  const secretKey =
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    '';
   const stripeKey = process.env.STRIPE_SECRET_KEY || '';
 
   const isMockSupabase = !supabaseUrl || supabaseUrl.includes('mock.supabase.co');
@@ -38,8 +49,10 @@ export function getBackendEnv(): BackendEnv {
     PORT: parseInt(process.env.PORT || '3000', 10),
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
     NEXT_PUBLIC_SUPABASE_URL: supabaseUrl,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-anon-key',
-    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishableKey,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: publishableKey,
+    SUPABASE_SECRET_KEY: secretKey,
+    SUPABASE_SERVICE_ROLE_KEY: secretKey,
     DATABASE_URL: process.env.DATABASE_URL,
     STRIPE_SECRET_KEY: stripeKey,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || '',
