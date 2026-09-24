@@ -13,6 +13,7 @@ const FALLBACK_PLANS: SubscriptionPlan[] = [
     price: 1500,
     currency: 'usd',
     active: true,
+    stripe_price_id: process.env.STRIPE_PRICE_ID_MONTHLY || null,
     created_at: new Date().toISOString(),
   },
   {
@@ -22,6 +23,7 @@ const FALLBACK_PLANS: SubscriptionPlan[] = [
     price: 14400,
     currency: 'usd',
     active: true,
+    stripe_price_id: process.env.STRIPE_PRICE_ID_YEARLY || null,
     created_at: new Date().toISOString(),
   },
 ];
@@ -104,7 +106,7 @@ export class SubscriptionService {
     const selectedPlan = plans.find((p) => p.id === planId) || plans[0];
 
     const stripeKey = process.env.STRIPE_SECRET_KEY;
-    const isMockStripe = !stripeKey || stripeKey.includes('your_key') || stripeKey.includes('placeholder');
+    const isMockStripe = !stripeKey || stripeKey.includes('your_') || stripeKey.includes('your-key') || stripeKey.includes('placeholder') || stripeKey.includes('mock');
 
     if (!isMockStripe) {
       try {
@@ -113,20 +115,25 @@ export class SubscriptionService {
           mode: 'subscription',
           customer_email: userEmail,
           line_items: [
-            {
-              price_data: {
-                currency: selectedPlan.currency || 'usd',
-                product_data: {
-                  name: selectedPlan.name,
-                  description: 'Access to monthly draws, score tracking, and charity contributions.',
+            selectedPlan.stripe_price_id && !selectedPlan.stripe_price_id.includes('placeholder') && !selectedPlan.stripe_price_id.includes('mock')
+              ? {
+                  price: selectedPlan.stripe_price_id,
+                  quantity: 1,
+                }
+              : {
+                  price_data: {
+                    currency: selectedPlan.currency || 'usd',
+                    product_data: {
+                      name: selectedPlan.name,
+                      description: 'Access to monthly draws, score tracking, and charity contributions.',
+                    },
+                    unit_amount: selectedPlan.price,
+                    recurring: {
+                      interval: selectedPlan.interval === 'YEARLY' ? 'year' : 'month',
+                    },
+                  },
+                  quantity: 1,
                 },
-                unit_amount: selectedPlan.price,
-                recurring: {
-                  interval: selectedPlan.interval === 'YEARLY' ? 'year' : 'month',
-                },
-              },
-              quantity: 1,
-            },
           ],
           metadata: {
             userId,

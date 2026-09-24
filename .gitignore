@@ -15,13 +15,15 @@ coverage/
 *.tsbuildinfo
 next-env.d.ts
 
-# Environment & Secrets (Keep only .env.example)
+# Environment & Secrets (Never commit actual env files, keep only .env.example)
 .env
+.env.*
 .env*.local
-.env.development
-.env.test
-.env.production
-.env.staging
+*.env
+**/.env
+**/.env.*
+**/.env*.local
+!**/.env.example
 !.env.example
 *.pem
 *.key
