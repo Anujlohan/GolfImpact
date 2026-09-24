@@ -22,7 +22,18 @@ export default async function RootLayout({
 
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    if (supabaseUrl && !supabaseUrl.includes('mock.supabase.co')) {
+    const rawKey =
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const publishableKey = rawKey ? rawKey.trim().replace(/^['"]|['"]$/g, '') : '';
+    const isLive =
+      supabaseUrl &&
+      !supabaseUrl.includes('mock.supabase.co') &&
+      publishableKey &&
+      publishableKey !== 'mock-anon-key' &&
+      !publishableKey.includes('your-supabase');
+
+    if (isLive) {
       const supabase = await createClient();
       const {
         data: { user: authUser },

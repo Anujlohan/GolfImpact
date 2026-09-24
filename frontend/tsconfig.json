@@ -30,7 +30,7 @@
       "@/lib/services/*": ["../backend/services/*"],
       "@/lib/draw-engine/*": ["../backend/draw-engine/*"],
       "@/lib/stripe/*": ["../backend/stripe/*"],
-      "@/lib/supabase/*": ["../backend/supabase/*"],
+      "@/lib/supabase/*": ["./lib/supabase/*", "../backend/supabase/*"],
       "@/lib/validations/*": ["../backend/validations/*"],
       "@/lib/utils/errors": ["../backend/utils/errors"],
       "@/lib/utils/*": ["./lib/utils/*", "../backend/utils/*"],
